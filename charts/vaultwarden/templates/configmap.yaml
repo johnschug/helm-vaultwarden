@@ -1,0 +1,25 @@
+{{- /*
+Copyright Broadcom, Inc. All Rights Reserved.
+SPDX-License-Identifier: APACHE-2.0
+*/}}
+
+{{- if .Values.config.create -}}
+apiVersion: v1
+kind: {{ .Values.config.secret | ternary "Secret" "ConfigMap" }}
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.commonLabels "context" $) | nindent 4 }}
+    app.kubernetes.io/component: server
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" .Values.commonAnnotations "context" $) | nindent 4 }}
+  {{- end }}
+data:
+  {{- range $key, $value := .Values.config.data }}
+  {{- if $.Values.config.secret }}
+  {{- $key | quote | nindent 2 }}: {{ include "common.tplvalues.render" (dict "value" $value "context" $) | b64enc }}
+  {{- else }}
+  {{- $key | quote | nindent 2 }}: {{ include "common.tplvalues.render" (dict "value" $value "context" $) | quote }}
+  {{- end }}
+  {{- end }}
+{{- end }}

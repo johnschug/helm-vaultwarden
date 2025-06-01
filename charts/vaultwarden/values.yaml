@@ -1,0 +1,469 @@
+# Copyright Broadcom, Inc. All Rights Reserved.
+# SPDX-License-Identifier: APACHE-2.0
+
+# yaml-language-server: $schema=values.schema.json
+
+global:
+  # @schema
+  # required: false
+  # type: [string, null]
+  # @schema
+  # -- Global Docker image registry
+  imageRegistry: ""
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/imagePullSecrets
+  # required: false
+  # @schema
+  # -- Global Docker registry secret names as an array
+  imagePullSecrets: []
+  # @schema
+  # required: false
+  # type: [string, null]
+  # @schema
+  # -- Global StorageClass for Persistent Volume(s)
+  storageClass: ""
+
+# -- Override Kubernetes version
+kubeVersion: ""
+
+# @schema
+# items:
+#   type: string
+# @schema
+# -- Override Kubernetes API versions reported by .Capabilities
+apiVersions: []
+
+# @schema
+# required: false
+# type: [string, null]
+# @schema
+# -- String to partially override `common.names.name`
+nameOverride: ""
+
+# @schema
+# required: false
+# type: [string, null]
+# @schema
+# -- String to fully override `common.names.fullname`
+fullnameOverride: ""
+
+# @schema
+# required: false
+# type: [string, null]
+# @schema
+# -- Overrides the namespace to place resources into
+namespaceOverride: ""
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/labels
+# required: false
+# @schema
+# -- Set additional labels. Helm templates can be used.
+commonLabels: {}
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+# required: false
+# @schema
+# -- Set additional annotations. Helm templates can be used.
+commonAnnotations: {}
+
+image:
+  # @schema
+  # required: false
+  # type: [string, null]
+  # @schema
+  # -- image registry
+  registry: "ghcr.io"
+  # @schema
+  # required: false
+  # type: [string, null]
+  # @schema
+  # -- image repository
+  repository: "dani-garcia/vaultwarden"
+  # @schema
+  # required: false
+  # enum:
+  # - Always
+  # - IfNotPresent
+  # - Never
+  # - null
+  # @schema
+  # -- image pull policy
+  pullPolicy: Always
+  # @schema
+  # required: false
+  # type: [string, null]
+  # @schema
+  # -- Overrides the image tag
+  tag: ""
+  # @schema
+  # required: false
+  # type: [string, null]
+  # @schema
+  # -- Overrides the image digest
+  digest: ""
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/imagePullSecrets
+  # required: false
+  # @schema
+  # -- If defined, uses a Secret to pull an image from a private Docker registry or repository.
+  pullSecrets: []
+
+# @schema
+# minimum: 0
+# @schema
+# -- The number of old ReplicaSets to retain
+revisionHistoryLimit: 10
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+# required: false
+# @schema
+# -- Annotations to be added to the daemonset
+daemonsetAnnotations: {}
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+# required: false
+# @schema
+# -- Annotations to be added to the deployment
+deploymentAnnotations: {}
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+# required: false
+# @schema
+# -- Annotations to be added to the statefulset
+statefulsetAnnotations: {}
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/labels
+# required: false
+# @schema
+# -- Labels to be added to the pods
+podLabels: {}
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+# required: false
+# @schema
+# -- Annotations to be added to the pods
+podAnnotations: {}
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/securityContext
+# @schema
+# -- pod-level security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1200
+  runAsGroup: 1200
+  fsGroup: 1200
+  seccompProfile:
+    type: RuntimeDefault
+
+# @schema
+# required: false
+# type: [boolean, null]
+# @schema
+hostUsers: false
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/container-v1.json#/properties/securityContext
+# @schema
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  privileged: false
+  runAsNonRoot: true
+  runAsUser: 1200
+  runAsGroup: 1200
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: ["ALL"]
+  seccompProfile:
+    type: RuntimeDefault
+
+config:
+  create: true
+  secret: false
+  name: ""
+  # @schema
+  # required: false
+  # additionalProperties:
+  #   type: string
+  # @schema
+  data: {}
+
+persistence:
+  storageClass: ""
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+  # required: false
+  # @schema
+  # -- Annotations to add to the pvc
+  annotations: {}
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/persistentvolumeclaimspec.json#/properties/accessModes
+  # @schema
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+  # -- The name of an existing claim to use for persistence
+  existingClaim: ""
+  # @schema
+  # required: false
+  # anyOf:
+  # - $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/persistentvolumeclaimspec.json#/properties/selector
+  # - type: null
+  # @schema
+  selector: null
+  # @schema
+  # required: false
+  # anyOf:
+  # - $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/persistentvolumeclaimspec.json#/properties/dataSource
+  # - type: null
+  # @schema
+  dataSource: null
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/resources
+# @schema
+# -- Resource limits and requests for the controller pods.
+resources: {}
+
+# @schema
+# enum: ["none", "nano", "small", "medium", "large", "xlarge", "2xlarge"]
+# @schema
+# -- Set container resources according to one common preset. This is ignored if resources is set (resources is recommended for production).
+resourcesPreset: "none"
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Automatically mount a ServiceAccount's API credentials?
+  automount: false
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+  # required: false
+  # @schema
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+service:
+  # @schema
+  # enum:
+  # - ExternalName
+  # - ClusterIP
+  # - NodePort
+  # - LoadBalancer
+  # @schema
+  # -- Kubernetes service type
+  type: ClusterIP
+  # @schema
+  # additionalProperties:
+  #   type: integer
+  #   minimum: 1
+  #   maximum: 65535
+  # @schema
+  # -- Kubernetes port where service is exposed
+  ports:
+    http: 80
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+  # @schema
+  # -- Additional annotations for the Service resource
+  annotations: {}
+
+networkPolicy:
+  enabled: true
+  # @schema
+  # enum:
+  #   - kubernetes
+  #   - cilium
+  # @schema
+  flavor: "kubernetes"
+  allowExternal: true
+  # -- Allow the pod to access any range of port and all destinations
+  allowExternalEgress: true
+  # -- Allow access from pods with client label set to `true`. Ignored if `networkPolicy.allowExternal` is `true`.
+  addExternalClientAccess: true
+  # @schema
+  # required: false
+  # items:
+  #   anyOf:
+  #     - $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/networkpolicyingressrule.json
+  #     - type: object
+  #       additionalProperties: true
+  # @schema
+  # -- Add extra ingress rules to the NetworkPolicy
+  extraIngress: []
+  # @schema
+  # required: false
+  # items:
+  #   anyOf:
+  #     - $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/networkpolicyegressrule.json
+  #     - type: object
+  #       additionalProperties: true
+  # @schema
+  # -- Add extra egress rules to the NetworkPolicy (ignored if allowExternalEgress=true)
+  extraEgress: []
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/labels
+  # @schema
+  # -- Labels to match to allow traffic from other pods. Ignored if `networkPolicy.allowExternal` is true.
+  ingressPodMatchLabels: {}
+  # @schema
+  # items:
+  #   type: object
+  #   properties:
+  #     name:
+  #       type: string
+  #     podLabels:
+  #       required: false
+  #       $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/labels
+  # @schema
+  # -- Namespaces, from which, to allow traffic. Ignored if `networkPolicy.allowExternal` is true.
+  ingressNamespaces: []
+
+ingress:
+  # -- Enable ingress record generation
+  enabled: false
+  # -- IngressClass that will be be used to implement the Ingress
+  className: ""
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+  # @schema
+  # -- Additional annotations for the Ingress resource
+  annotations: {}
+  hostname: ""
+  path: "/"
+  pathType: ImplementationSpecific
+  extraPaths: []
+  # @schema
+  # items:
+  #   type: object
+  #   properties:
+  #     name:
+  #       type: string
+  #     path:
+  #       required: false
+  #       type: string
+  #       default: "/"
+  #     pathType:
+  #       required: false
+  #       type: string
+  #       default: ImplementationSpecific
+  # @schema
+  extraHosts: []
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/ingressspec.json#/properties/tls
+  # @schema
+  # -- An array with the tls configuration
+  tls: []
+
+httpRoute:
+  # -- Enable HttpRoute record generation
+  enabled: false
+  # @schema
+  # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+  # @schema
+  # -- Additional annotations for the HttpRoute resource
+  annotations: {}
+  # -- The DNS name to respond to
+  hostnames: []
+  parentRefs: []
+  # -- An array of rules to use for the route,
+  # the service backend will be automatically added
+  # to all rules
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/container-v1.json#/properties/livenessProbe
+# @schema
+livenessProbe:
+  httpGet:
+    path: /alive
+    port: http
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/container-v1.json#/properties/readinessProbe
+# @schema
+readinessProbe:
+  httpGet:
+    path: /alive
+    port: http
+
+autoscaling:
+  vpa:
+    enabled: false
+    # @schema
+    # $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/objectmeta.json#/properties/annotations
+    # @schema
+    annotations: {}
+    controlledResources: []
+    maxAllowed: {}
+    minAllowed: {}
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/container-v1.json#/properties/env
+# @schema
+# -- Additional environment variables to be added to the pods
+extraEnvVars: []
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/container-v1.json#/properties/envFrom
+# @schema
+# -- Additional environment variables to be added to the pods
+extraEnvFrom: []
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/volumes
+# @schema
+# -- Additional volumes on the output Deployment definition.
+extraVolumes: []
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/container-v1.json#/properties/volumeMounts
+# @schema
+# -- Additional volumeMounts on the output Deployment definition.
+extraVolumeMounts: []
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/containers
+# @schema
+initContainers: []
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/nodeSelector
+# @schema
+# -- Node labels for pod assignment
+nodeSelector: {}
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/tolerations
+# @schema
+# -- Toleration labels for pod assignment
+tolerations: []
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/affinity
+# @schema
+# -- Affinity settings for pod assignment
+affinity: {}
+
+# @schema
+# $ref: https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master/podspec-v1.json#/properties/topologySpreadConstraints
+# @schema
+topologySpreadConstraints: []
+
+# @schema
+# required: false
+# additionalProperties: true
+# @schema
+common: {}

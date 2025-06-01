@@ -1,0 +1,19 @@
+apiVersion: v2
+version: 0.1.0
+name: vaultwarden
+# renovate: image=ghcr.io/dani-garci/vaultwarden
+appVersion: "1.33.2"
+type: application
+description: A Helm chart for Vaultwarden
+icon: https://github.com/dani-garcia/vaultwarden/blob/0d16da440da9a2a5abe23108029ac23847eb4070/resources/vaultwarden-logo-auto.svg
+home: https://github.com/dani-garcia/vaultwarden/
+sources:
+  - https://github.com/dani-garcia/vaultwarden/
+dependencies:
+  - name: common
+    version: ^2.31
+    repository: oci://registry-1.docker.io/bitnamicharts
+# annotations:
+#   helm.sh/images: |
+#     - name: vaultwarden
+#       image: "ghcr.io/dani-garci/vaultwarden:1.33.2"
