@@ -24,6 +24,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
+      - name: Build chart
+        run: |
+          helm dep build charts/vaultwarden
       - name: Package chart
         run: |
           helm package charts/vaultwarden
