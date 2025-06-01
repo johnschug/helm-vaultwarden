@@ -95,7 +95,7 @@ image:
   # type: [string, null]
   # @schema
   # -- Overrides the image tag
-  tag: ""
+  tag: "@sha256:48267ea14d8649b2e553a5fe290c40b5dd94d54e9a24b26ae7134a75a659695f"
   # @schema
   # required: false
   # type: [string, null]
