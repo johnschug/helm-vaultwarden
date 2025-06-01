@@ -1,7 +1,7 @@
 apiVersion: v2
 version: 0.1.0
 name: vaultwarden
-# renovate: image=ghcr.io/dani-garci/vaultwarden
+# renovate: image=ghcr.io/dani-garcia/vaultwarden
 appVersion: "1.33.2"
 type: application
 description: A Helm chart for Vaultwarden
@@ -16,4 +16,4 @@ dependencies:
 # annotations:
 #   helm.sh/images: |
 #     - name: vaultwarden
-#       image: "ghcr.io/dani-garci/vaultwarden:1.33.2"
+#       image: "ghcr.io/dani-garcia/vaultwarden:1.33.2"
